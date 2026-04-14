@@ -31,6 +31,12 @@ The bot silently monitors [AnimeAllStar1](https://www.animeallstar1.com) to chec
 
 ## Configuration
 
+### Discord Webhook (Required)
+You need to set up a Discord Webhook for the bot to send notifications.
+1. In your Discord server, go to **Server Settings** -> **Integrations** -> **Webhooks**.
+2. Click **New Webhook**, name it, and choose the channel where notifications should be sent.
+3. Click **Copy Webhook URL** and assign it to the `DISCORD_WEBHOOK_URL` variable in your `.env` file.
+
 ### Discord Mentions (Optional)
 You can configure the bot to ping a specific role, user, or `@everyone` when a chapter drops by setting the `DISCORD_MENTION` variable in your `.env` file:
 - To tag everyone: `DISCORD_MENTION="@everyone"`
