@@ -17,6 +17,7 @@ WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
 if not WEBHOOK_URL:
     raise ValueError("Environment variable DISCORD_WEBHOOK_URL is not set.")
 
+DISCORD_MENTION = os.getenv("DISCORD_MENTION", "")
 JSON_DB_FILE = "mangas.json"
 
 # Configure logging to just output the raw message (which will be JSON)
@@ -49,8 +50,14 @@ class MangaTracker:
             return False
 
         manga_title = manga_name.title()
+        
+        # Prepare the message content, prefixing with a mention if configured
+        message_content = f"Capítulo {chapter} de **{manga_title}** YA ESTÁ DISPONIBLE en español y sin spoilers. {url}"
+        if DISCORD_MENTION:
+            message_content = f"{DISCORD_MENTION} {message_content}"
+
         payload = {
-            "content": f"Capítulo {chapter} de **{manga_title}** YA ESTÁ DISPONIBLE en español y sin spoilers. {url}",
+            "content": message_content,
             "username": f"Radar {manga_title}",
             "avatar_url": "https://static.wikia.nocookie.net/49d3ad00-c253-4f2a-bfdb-457851c80aa2/scale-to-width/755",
         }

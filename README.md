@@ -30,6 +30,14 @@ The bot silently monitors [AnimeAllStar1](https://www.animeallstar1.com) to chec
    ```
 
 ## Configuration
+
+### Discord Mentions (Optional)
+You can configure the bot to ping a specific role, user, or `@everyone` when a chapter drops by setting the `DISCORD_MENTION` variable in your `.env` file:
+- To tag everyone: `DISCORD_MENTION="@everyone"`
+- To tag a specific role: `DISCORD_MENTION="<@&ROLE_ID>"` (e.g., `<@&1234567890>`)
+- To tag a specific user: `DISCORD_MENTION="<@USER_ID>"` (e.g., `<@1234567890>`)
+
+### Manga Tracking (mangas.json)
 All manga targets and their current expectation states are stored in `mangas.json`:
 
 ```json
