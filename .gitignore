@@ -1,0 +1,4 @@
+.venv
+.envtrack-and-push.sh
+logs/
+.env
