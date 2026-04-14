@@ -5,23 +5,7 @@ This project was developed out of the frustration of constantly encountering man
 
 The bot silently monitors [AnimeAllStar1](https://www.animeallstar1.com) to check if the chapter is available **fully translated and without being a leak, raw, or text spoiler**. When the chapter is confirmed to be ready to read in good quality, it sends a notification directly to a configured Discord server.
 
-## Features
-- **Automated and silent:** No infinite loops. Runs exactly once per execution.
-- **Anti-Fake Detector:** Ignores placeholder pages that only say "release date" or "spoilers/raws" without having the actual manga images.
-- **Multi-Manga JSON Tracking:** Centrally track Multiple mangas and their current chapters using the versatile `mangas.json` database.
-- **GitHub Actions Integration:** Avoid using your own hardware entirely. Native cron schedules run via GitHub Actions and automatically commit state updates back to your repository.
-- **Canonical Logging:** Logs every scan cleanly (JSON format), perfect for ingesting into log management systems without cluttering your console.
-- **Git Auto-Commit:** Can be configured to automatically `git commit` and `git push` the `mangas.json` file when a new chapter drops, ensuring your central repository stays updated. 
-
 ## Installation and Usage
-
-1. **GitHub Setup (Recommended):**
-   - Fork or clone this repository.
-   - Go to your repository's **Settings > Secrets and variables > Actions**.
-   - Add a new repository secret called `DISCORD_WEBHOOK_URL` containing your Discord webhook.
-   - Adjust `mangas.json` in your code with the names of the mangas and the chapters you are waiting for. Commits back to the file will happen automatically!
-
-2. **Local execution (Optional):**
    ```bash
    pip install -r requirements.txt
    cp .env.example .env
@@ -63,6 +47,5 @@ All manga targets and their current expectation states are stored in `mangas.jso
 }
 ```
 
-Whenever the bot detects a chapter reliably, it notifies Discord and increases `current_chapter` locally. If running via GitHub Actions, the bot automatically commits and pushes the new number to your codebase.
-
+Whenever the bot detects a chapter reliably, it notifies Discord and increases `current_chapter` locally.
 Enjoy your manga without stress or spoilers!
