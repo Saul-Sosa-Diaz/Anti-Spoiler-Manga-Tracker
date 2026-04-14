@@ -44,13 +44,13 @@ class MangaTracker:
             "fecha de estreno",
         }
 
-    def send_notification(self, manga_name: str, chapter: int) -> bool:
+    def send_notification(self, manga_name: str, chapter: int, url: str) -> bool:
         if not self.webhook_url:
             return False
 
         manga_title = manga_name.title()
         payload = {
-            "content": f"Capítulo {chapter} de **{manga_title}** YA ESTÁ DISPONIBLE en español y sin spoilers.",
+            "content": f"Capítulo {chapter} de **{manga_title}** YA ESTÁ DISPONIBLE en español y sin spoilers. {url}",
             "username": f"Radar {manga_title}",
             "avatar_url": "https://static.wikia.nocookie.net/49d3ad00-c253-4f2a-bfdb-457851c80aa2/scale-to-width/755",
         }
@@ -64,8 +64,8 @@ class MangaTracker:
 
     def scan_chapter(
         self, manga_name: str, chapter_number: int
-    ) -> Tuple[str, Optional[str]]:
-        """Returns a tuple of (status: str, error_detail: Optional[str])."""
+    ) -> Tuple[str, Optional[str], str]:
+        """Returns a tuple of (status: str, error_detail: Optional[str], search_url: str)."""
         query = urllib.parse.quote_plus(f"{manga_name} manga {chapter_number}")
         search_url = f"https://www.animeallstar1.com/search?q={query}"
 
@@ -73,31 +73,32 @@ class MangaTracker:
             response = requests.get(search_url, headers=self.headers, timeout=15)
 
             if response.status_code != 200:
-                return ("not_found", f"HTTP {response.status_code}")
+                return ("not_found", f"HTTP {response.status_code}", search_url)
 
             soup = BeautifulSoup(response.text, "html.parser")
             article = soup.find(class_="post-body") or soup.find("body")
 
             if not article:
-                return ("not_found", "No article body found")
+                return ("not_found", "No article body found", search_url)
 
             content = article.text.lower()
             images = article.find_all("img")
 
             for word in self.forbidden_keywords:
                 if word in content:
-                    return ("forbidden_keyword_detected", word)
+                    return ("forbidden_keyword_detected", word, search_url)
 
             if "español" in content and len(images) >= 5:
-                return ("found", None)
+                return ("found", None, search_url)
 
             return (
                 "not_found",
                 "Placeholder detected (missing images or Spanish confirmation)",
+                search_url,
             )
 
         except requests.RequestException as error:
-            return ("error", str(error))
+            return ("error", str(error), search_url)
 
 
 def main() -> None:
@@ -134,13 +135,17 @@ def main() -> None:
         }
 
         try:
-            status, detail = tracker.scan_chapter(manga_name, current_chapter)
+            status, detail, search_url = tracker.scan_chapter(
+                manga_name, current_chapter
+            )
             canonical_log["scan_status"] = status
             if detail:
                 canonical_log["error_detail"] = detail
 
             if status == "found":
-                notified = tracker.send_notification(manga_name, current_chapter)
+                notified = tracker.send_notification(
+                    manga_name, current_chapter, search_url
+                )
                 canonical_log["discord_notified"] = notified
 
                 if notified:
