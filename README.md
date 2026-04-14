@@ -17,16 +17,16 @@ The bot silently monitors [AnimeAllStar1](https://www.animeallstar1.com) to chec
    If you run this on a home server (like a Raspberry Pi), open your crontab (`crontab -e`) and configure it to run mechanically on Thursdays and Fridays:
    ```cron
    # Thursday: Run every hour from 12:00 PM to 11:00 PM (Without auto-push)
-   0 12-23 * * 4 cd /path/to/one-piece-tracker && /usr/bin/python3 src/main.py >> logs/scan.log 2>&1
+   0 12-23 * * 4 cd /path/to/Anti-Spoiler Manga Tracker && /usr/bin/python3 src/main.py >> logs/scan.log 2>&1
 
    # Friday: Run every hour all day (Without auto-push)
-   0 * * * 5 cd /path/to/one-piece-tracker && /usr/bin/python3 src/main.py >> logs/scan.log 2>&1
+   0 * * * 5 cd /path/to/Anti-Spoiler Manga Tracker && /usr/bin/python3 src/main.py >> logs/scan.log 2>&1
    
    # --- ALTERNATIVE WITH GIT AUTO-PUSH ---
    # NOTE: This script (`track-and-push.sh`) is designed mainly for me to keep the main repository up to date automatically when new chapters are out.
    # For your personal forks or clones, you should just run `python3 src/main.py` directly as shown above to avoid unsolicited pushes to your repository.
-   # 0 12-23 * * 4 cd /path/to/one-piece-tracker && ./track-and-push.sh >> logs/scan.log 2>&1
-   # 0 * * * 5 cd /path/to/one-piece-tracker && ./track-and-push.sh >> logs/scan.log 2>&1
+   # 0 12-23 * * 4 cd /path/to/Anti-Spoiler Manga Tracker && ./track-and-push.sh >> logs/scan.log 2>&1
+   # 0 * * * 5 cd /path/to/Anti-Spoiler Manga Tracker && ./track-and-push.sh >> logs/scan.log 2>&1
    ```
 
 ## Configuration
